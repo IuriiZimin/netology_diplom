@@ -1,3 +1,3 @@
-comunity_token = ''
-acces_token = ''
+comunity_token = ' '
+acces_token = ' '
 db_url_object = "postgresql+psycopg2://student:student@localhost/VKinder_db"
