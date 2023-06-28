@@ -37,11 +37,11 @@ class BotInterface:
                         city = event.text.lower()
                         self.message_send(event.user_id, city)
                         self.params['city'] = city
-                    # if self.params['bdate'] is None:
-                    #     self.message_send(event.user_id, 'Введите Вашу дату рождения, например 23.12.1986')
-                    #     bdate = event.text
-                    #     self.message_send(event.user_id, bdate)
-                    #     self.params['bdate'] = bdate
+                    if self.params['year'] is None:
+                        self.message_send(event.user_id, 'Введите Ваш возраст')
+                        year = event.text
+                        self.message_send(event.user_id, year)
+                        self.params['year'] = year
                     if self.params['sex'] is None:
                         self.message_send(event.user_id, 'Введите Ваш пол (1 - женский, 2 - мужской')
                         sex = event.text
