@@ -2,9 +2,12 @@
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
-
-from config import comunity_token, acces_token
+from config import comunity_token, acces_token, db_url_object
 from core import VkTools
+from sqlalchemy import create_engine
+from data_store import add_user, check_user
+
+
 
 class BotInterface():
 
