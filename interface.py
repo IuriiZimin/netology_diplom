@@ -64,7 +64,8 @@ class BotInterface:
                             photo_str += f'photo{photo["owner_id"]}_{photo["id"]},'
                     self.offset += 10
                     nl = '\n'
-                    self.message_send(event.user_id, f'Встречайте: {worksheet["name"]}{nl}Страница ВК: vk.com/{worksheet["id"]}', attachment=photo_str)
+                    self.message_send(event.user_id, f'Встречайте: {worksheet["name"]}{nl}'
+                                                     f'Страница ВК: vk.com/{worksheet["id"]}', attachment=photo_str)
 
                     if not check_user(engine, event.user_id, worksheet["id"]):
                         add_user(engine, event.user_id, worksheet["id"])

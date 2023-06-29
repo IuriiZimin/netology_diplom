@@ -9,7 +9,7 @@ Base = declarative_base()
 
 
 class Viewed(Base):
-    __tablename__ = 'Viewed'
+    __tablename__ = 'viewed'
     profile_id = sq.Column(sq.Integer, primary_key=True)
     worksheet_id = sq.Column(sq.Integer, primary_key=True)
 
@@ -24,13 +24,13 @@ def add_user(some_engine, profile_id, worksheet_id):
 def check_user(some_engine, profile_id, worksheet_id):
     with Session(some_engine) as session:
         from_bd = session.query(Viewed).filter(Viewed.profile_id == profile_id,
-                                               Viewed.worksheet_id == worksheet_id).first()
+                                               Viewed.worksheet_id == worksheet_id).all()
         return True if from_bd else False
 
 
 if __name__ == '__main__':
     engine = create_engine(db_url_object)
     Base.metadata.create_all(engine)
-    add_user(engine, 2113, 1245121)
-    res = check_user(engine, 2113, 1245121)
+    #add_user(engine, 2222, 2222222)
+    res = check_user(engine, 1111, 111111)
     print(res)

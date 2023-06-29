@@ -11,16 +11,16 @@ class VkTools:
 
     def get_profile_info(self, user_id):
         try:
-            info, = self.api.method('users.get', {'user_id': user_id, 'fields': 'city,b_date,sex,relation'})
+            info, = self.api.method('users.get', {'user_id': user_id, 'fields': 'city, sex, bdate'})
         except ApiError as e:
             info = {}
             print(f'error = {e}')
 
         user_info = {'name': (info['first_name'] + ' ' + info['last_name']) if
                      'first_name' in info and 'last_name' in info else None,
-                     'sex': info['sex'],
-                     'year': datetime.now().year - int(info.get('b_date').split('.')[2]) if
-                     info.get('b date') is not None else None,
+                     'sex': info.get('sex'),
+                     'year': datetime.now().year - int(info.get('bdate').split('.')[2]) if
+                     info.get('bdate') is not None else None,
                      'city': info.get('city')['title'] if info.get('city') is not None else None,
                      }
         return user_info
@@ -48,21 +48,21 @@ class VkTools:
 
     def get_photos(self, user_id):
         try:
-            some_photos = self.api.method('photos.get',
+            photos = self.api.method('photos.get',
                                           {'user_id': user_id,
                                            'album_id': 'profile',
                                            'extended': 1
                                            }
                                           )
         except ApiError as e:
-            some_photos = {}
+            photos = {}
             print(f'error = {e}')
 
         res = [{'owner_id': item['owner_id'],
                 'id': item['id'],
                 'likes': item['likes']['count'],
                 'comments': item['comments']['count']
-                } for item in some_photos['items']
+                } for item in photos['items']
                ]
 
         res.sort(key=lambda x: (x['likes'], x['comments']), reverse=True)
