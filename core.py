@@ -15,7 +15,6 @@ class VkTools:
         except ApiError as e:
             info = {}
             print(f'error = {e}')
-
         user_info = {'name': (info['first_name'] + ' ' + info['last_name']) if
                      'first_name' in info and 'last_name' in info else None,
                      'sex': info.get('sex'),
@@ -43,30 +42,28 @@ class VkTools:
 
         res = [{'name': item['first_name'] + ' ' + item['last_name'],
                 'id': item['id']} for item in users['items'] if item['is_closed'] is False]
-
         return res
 
     def get_photos(self, user_id):
         try:
-            photos = self.api.method('photos.get',
+            some_photos = self.api.method('photos.get',
                                           {'user_id': user_id,
                                            'album_id': 'profile',
                                            'extended': 1
                                            }
                                           )
         except ApiError as e:
-            photos = {}
+            some_photos = {}
             print(f'error = {e}')
 
         res = [{'owner_id': item['owner_id'],
                 'id': item['id'],
                 'likes': item['likes']['count'],
                 'comments': item['comments']['count']
-                } for item in photos['items']
+                } for item in some_photos['items']
                ]
 
         res.sort(key=lambda x: (x['likes'], x['comments']), reverse=True)
-
         return res[:3]
 
 
