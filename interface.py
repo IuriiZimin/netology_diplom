@@ -5,6 +5,7 @@ from config import community_token, access_token, db_url_object
 from core import VkTools
 from sqlalchemy import create_engine
 from data_store import add_user, check_user
+from pprint import pprint
 
 
 class BotInterface:
@@ -42,32 +43,22 @@ class BotInterface:
                         year = event.text
                         self.message_send(event.user_id, year)
                         self.params['year'] = year
-                    if self.params['sex'] is None:
-                        self.message_send(event.user_id, 'Введите Ваш пол (1 - женский, 2 - мужской')
-                        sex = event.text
-                        self.message_send(event.user_id, sex)
-                        self.params['sex'] = sex
 
                 elif command == 'поиск':
-                    if self.worksheets:
-                        worksheet = self.worksheets.pop()
-                        photos = self.vk_tools.get_photos(worksheet['id'])
-                        photo_str = ''
-                        for photo in photos:
-                            photo_str += f'photo{photo["owner_id"]}_{photo["id"]},'
-                    else:
+                    if not self.worksheets:
                         self.worksheets = self.vk_tools.search_worksheet(self.params, self.offset)
-                        worksheet = self.worksheets.pop()
+
+                    worksheet = self.worksheets.pop()
+                    print(worksheet)
+                    if not check_user(engine, event.user_id, worksheet["id"]):
                         photos = self.vk_tools.get_photos(worksheet['id'])
                         photo_str = ''
                         for photo in photos:
                             photo_str += f'photo{photo["owner_id"]}_{photo["id"]},'
-                    self.offset += 10
-                    nl = '\n'
-                    self.message_send(event.user_id, f'Встречайте: {worksheet["name"]}{nl}'
-                                                     f'Страница ВК: vk.com/{worksheet["id"]}', attachment=photo_str)
-
-                    if not check_user(engine, event.user_id, worksheet["id"]):
+                        self.offset += 10
+                        nl = '\n'
+                        self.message_send(event.user_id, f'Встречайте: {worksheet["name"]}{nl}'
+                                                         f'Страница ВК: vk.com/{worksheet["id"]}', attachment=photo_str)
                         add_user(engine, event.user_id, worksheet["id"])
 
                 elif command == 'пока':
