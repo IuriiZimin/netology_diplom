@@ -49,7 +49,6 @@ class BotInterface:
                         self.worksheets = self.vk_tools.search_worksheet(self.params, self.offset)
 
                     worksheet = self.worksheets.pop()
-                    print(worksheet)
                     if not check_user(engine, event.user_id, worksheet["id"]):
                         photos = self.vk_tools.get_photos(worksheet['id'])
                         photo_str = ''
@@ -66,7 +65,6 @@ class BotInterface:
 
                 else:
                     self.message_send(event.user_id, 'Неправильная команда')
-
 
 if __name__ == '__main__':
     engine = create_engine(db_url_object)
